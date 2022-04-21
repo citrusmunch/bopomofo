@@ -14,7 +14,7 @@ class PinyinParsingError(Exception):
     pass
 
 
-def to_bopomofo(chars, splitter=" ", tones=True, first_tone_symbol=False):
+def to_bopomofo(chars, splitter=" ", tones="marks", first_tone_symbol=False):
     """Translate words to bopomofo
 
     :param chars: The text string to be converted
@@ -26,7 +26,7 @@ def to_bopomofo(chars, splitter=" ", tones=True, first_tone_symbol=False):
     return splitter.join(_bopomofo_list(chars, tones, first_tone_symbol))
 
 
-def to_pinyin(chars, splitter=" ", tones=False):
+def to_pinyin(chars, splitter=" ", tones=None):
     """Translate words to pinyin
     An API port of 'xpinyin.get_pinyin'
     """
@@ -34,7 +34,7 @@ def to_pinyin(chars, splitter=" ", tones=False):
     return _pinyin.get_pinyin(chars, splitter, tone_marks=tones)
 
 
-def bopomofo_to_pinyin(bopomofo, splitter=" ", tones=True, default_tone=1):
+def bopomofo_to_pinyin(bopomofo, splitter=" ", tones="marks", default_tone=1):
     """Translate bopomofo to pinyin"""
 
     bopomofos = _bopomofo_split(bopomofo, splitter)
@@ -66,13 +66,13 @@ def _bopomofo_split(bopomofo, splitter=" "):
     return bopomofos
 
 
-def _pinyin_list(chars, tones=False):
+def _pinyin_list(chars, tones=None):
     """Translate words to pinyin in list"""
 
-    return _pinyin.get_pinyin(chars, "|", show_tone_marks=tones).split("|")
+    return _pinyin.get_pinyin(chars, "|", tone_marks=tones).split("|")
 
 
-def _bopomofo_list(chars, tones=False, first_tone_symbol=False):
+def _bopomofo_list(chars, tones=None, first_tone_symbol=False):
     """Translate words to bopomofo in list"""
 
     pinyin = _pinyin_list(chars, tones)
@@ -83,7 +83,7 @@ def _bopomofo_list(chars, tones=False, first_tone_symbol=False):
 
 
 def _single_pinyin_to_bopomofo(
-    pinyin, tones=False, first_tone_symbol=False, ignore_warning=False
+    pinyin, tones=None, first_tone_symbol=False, ignore_warning=False
 ):
     """Translate a single pinyin to bopomofo"""
 
@@ -131,7 +131,7 @@ def _single_pinyin_to_bopomofo(
 
 
 def _single_bopomofo_to_pinyin(
-    bopomofo, tones=False, default_tone=1, ignore_warning=False
+    bopomofo, tones=None, default_tone=1, ignore_warning=False
 ):
     result = None
     raw = bopomofo
