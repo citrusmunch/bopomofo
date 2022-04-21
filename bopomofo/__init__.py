@@ -48,12 +48,12 @@ def bopomofo_to_pinyin(bopomofo, splitter=" ", tones=True, default_tone=1):
 
 def _bopomofo_split(bopomofo, splitter=" "):
     tones = "".join(_dict["tones"]["bopomofo"].values()) + splitter
-    vacabulary = _dict["vacabulary"] + tones
+    vocabulary = _dict["vocabulary"] + tones
     bopomofos = []
     pre_index = 0
     not_bopomofo = False
     for index, char in enumerate(bopomofo):
-        if char not in vacabulary:
+        if char not in vocabulary:
             not_bopomofo = True
         else:
             if not_bopomofo:
